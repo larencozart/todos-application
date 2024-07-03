@@ -1,3 +1,4 @@
+const config = require("./lib/config");
 const express = require("express");
 const morgan = require("morgan");
 const flash = require("express-flash");
@@ -5,12 +6,12 @@ const session = require("express-session");
 const { body, validationResult } = require("express-validator");
 const PgPersistence = require("./lib/pg-persistence");
 const store = require("connect-loki");
-const SessionPersistence = require("./lib/session-persistence");
+// const SessionPersistence = require("./lib/session-persistence");
 const catchError = require("./lib/catch-error");
 
 const app = express();
-const host = "localhost";
-const port = 3000;
+const host = config.HOST;
+const port = config.PORT;
 const LokiStore = store(session);
 
 app.set("views", "./views");
@@ -29,7 +30,7 @@ app.use(session({
   name: "launch-school-todos-session-id",
   resave: false,
   saveUninitialized: true,
-  secret: "this is not very secure",
+  secret: config.SECRET,
   store: new LokiStore({}),
 }));
 
